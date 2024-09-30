@@ -311,7 +311,7 @@ type GetUserListRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Users []string `protobuf:"bytes,1,rep,name=users,proto3" json:"users,omitempty"` // a
+	Users []string `protobuf:"bytes,1,rep,name=users,proto3" json:"users,omitempty"` // awe
 }
 
 func (x *GetUserListRequest) Reset() {
