@@ -33,7 +33,7 @@ type UserServiceClient interface {
 	GetAccessTokenInfo(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetAccessTokenInfoResponse, error)
 	GetUserMe(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetUserMeResponse, error)
 	UserLogout(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*UserLogoutResponse, error)
-	GetUserList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetUserListResponse, error)
+	GetUserList(ctx context.Context, in *GetUserListRequest, opts ...grpc.CallOption) (*GetUserListResponse, error)
 }
 
 type userServiceClient struct {
@@ -74,7 +74,7 @@ func (c *userServiceClient) UserLogout(ctx context.Context, in *emptypb.Empty, o
 	return out, nil
 }
 
-func (c *userServiceClient) GetUserList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetUserListResponse, error) {
+func (c *userServiceClient) GetUserList(ctx context.Context, in *GetUserListRequest, opts ...grpc.CallOption) (*GetUserListResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetUserListResponse)
 	err := c.cc.Invoke(ctx, UserService_GetUserList_FullMethodName, in, out, cOpts...)
@@ -91,7 +91,7 @@ type UserServiceServer interface {
 	GetAccessTokenInfo(context.Context, *emptypb.Empty) (*GetAccessTokenInfoResponse, error)
 	GetUserMe(context.Context, *emptypb.Empty) (*GetUserMeResponse, error)
 	UserLogout(context.Context, *emptypb.Empty) (*UserLogoutResponse, error)
-	GetUserList(context.Context, *emptypb.Empty) (*GetUserListResponse, error)
+	GetUserList(context.Context, *GetUserListRequest) (*GetUserListResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -111,7 +111,7 @@ func (UnimplementedUserServiceServer) GetUserMe(context.Context, *emptypb.Empty)
 func (UnimplementedUserServiceServer) UserLogout(context.Context, *emptypb.Empty) (*UserLogoutResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UserLogout not implemented")
 }
-func (UnimplementedUserServiceServer) GetUserList(context.Context, *emptypb.Empty) (*GetUserListResponse, error) {
+func (UnimplementedUserServiceServer) GetUserList(context.Context, *GetUserListRequest) (*GetUserListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUserList not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
@@ -190,7 +190,7 @@ func _UserService_UserLogout_Handler(srv interface{}, ctx context.Context, dec f
 }
 
 func _UserService_GetUserList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
+	in := new(GetUserListRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -202,7 +202,7 @@ func _UserService_GetUserList_Handler(srv interface{}, ctx context.Context, dec 
 		FullMethod: UserService_GetUserList_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServiceServer).GetUserList(ctx, req.(*emptypb.Empty))
+		return srv.(UserServiceServer).GetUserList(ctx, req.(*GetUserListRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
